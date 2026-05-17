@@ -2,6 +2,8 @@
 
 A shell function that updates system packages and AI coding assistants in one command, with before/after version reporting.
 
+**Blog post:** [up: One Command to Update All My AI Tools](https://zonca.dev/posts/2026-05-17-up-shell-function-update-all-ai-tools.html)
+
 ## What it updates
 
 | Tool | Method |
