@@ -2,7 +2,7 @@
 # up.sh — Update system packages and AI coding assistants with version reporting
 # Repo: https://github.com/zonca/up
 # Install: curl -o ~/.up.sh https://raw.githubusercontent.com/zonca/up/main/up.sh
-#          echo 'source ~/.up.sh' >> ~/.bashrc
+#          echo "source ~/.up.sh" >> ~/.bashrc
 
 UP_REPO="zonca/up"
 UP_SCRIPT_PATH="${BASH_SOURCE[0]}"
@@ -46,6 +46,10 @@ up() {
 
     if command -v claude >/dev/null 2>&1; then
         old_vers["claude"]=$(claude --version 2>/dev/null | head -1 || echo "N/A")
+    fi
+
+    if command -v bw >/dev/null 2>&1; then
+        old_vers["bw"]=$(bw --version 2>/dev/null | head -1 || echo "N/A")
     fi
 
     echo "Fetching apt upgrade info..."
@@ -114,5 +118,10 @@ up() {
     if command -v claude >/dev/null 2>&1; then
         local new_claude=$(claude --version 2>/dev/null | head -1 || echo "N/A")
         printf "%-30s | %-15s -> %-15s\n" "claude" "${old_vers["claude"]}" "$new_claude"
+    fi
+
+    if command -v bw >/dev/null 2>&1; then
+        local new_bw=$(bw --version 2>/dev/null | head -1 || echo "N/A")
+        printf "%-30s | %-15s -> %-15s\n" "bw" "${old_vers["bw"]}" "$new_bw"
     fi
 }
