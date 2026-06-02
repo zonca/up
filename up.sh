@@ -24,7 +24,7 @@ _up_self_update() {
 }
 
 up() {
-    _up_self_update
+    # _up_self_update  # Disabled locally to prevent overwriting fixes
 
     local npm_pkgs=("@google/gemini-cli" "@openai/codex" "opencode-ai" "@charmland/crush" "@qwen-code/qwen-code" "cline" "@bitwarden/cli" "@github/copilot")
     local installed_npm=()
@@ -62,8 +62,12 @@ up() {
     if [ ${#installed_npm[@]} -gt 0 ]; then
         echo "Updating npm packages: ${installed_npm[*]}"
         local prefix=$(npm config get prefix)
-        sudo rm -rf "$prefix/lib/node_modules/@google/.gemini-cli-*" "$prefix/lib/node_modules/.codex-cli-*"
-        sudo npm install -g "${installed_npm[@]}" --force
+        # Clean up any root-owned or stale temporary directories from previous sudo runs or specific package installers
+        sudo rm -rf "$prefix/lib/node_modules/@google/.gemini-cli-*" \
+                   "$prefix/lib/node_modules/@openai/.codex-*" \
+                   "$prefix/lib/node_modules/.codex-cli-*" \
+                   "$prefix/lib/node_modules/.opencode-ai-*"
+        npm install -g "${installed_npm[@]}" --force
     fi
 
     if command -v gog >/dev/null 2>&1; then
