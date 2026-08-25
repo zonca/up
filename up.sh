@@ -52,6 +52,10 @@ up() {
         old_vers["bw"]=$(bw --version 2>/dev/null | head -1 || echo "N/A")
     fi
 
+    if command -v multica >/dev/null 2>&1; then
+        old_vers["multica"]=$(multica version | head -1 | awk "{print \$2}")
+    fi
+
     echo "Fetching apt upgrade info..."
     sudo apt update > /dev/null
     local apt_upgradable=$(apt list --upgradable 2>/dev/null | grep "/")
@@ -96,6 +100,11 @@ up() {
         copilot extension upgrade 2>/dev/null || true
     fi
 
+    if command -v multica >/dev/null 2>&1; then
+        echo "Updating multica..."
+        sudo multica update 2>&1 || true
+    fi
+
     echo -e "\n--- Update Report ---"
     printf "%-30s | %-15s -> %-15s\n" "Package" "Old" "New"
     echo "------------------------------------------------------------------------"
@@ -127,5 +136,10 @@ up() {
     if command -v bw >/dev/null 2>&1; then
         local new_bw=$(bw --version 2>/dev/null | head -1 || echo "N/A")
         printf "%-30s | %-15s -> %-15s\n" "bw" "${old_vers["bw"]}" "$new_bw"
+    fi
+
+    if command -v multica >/dev/null 2>&1; then
+        local new_multica=$(multica version | head -1 | awk "{print \$2}")
+        printf "%-30s | %-15s -> %-15s\n" "multica" "${old_vers["multica"]}" "$new_multica"
     fi
 }
