@@ -103,6 +103,23 @@ up() {
     if command -v multica >/dev/null 2>&1; then
         echo "Updating multica..."
         sudo multica update 2>&1 || true
+        local new_multica=$(multica version | head -1 | awk "{print \$2}")
+        if [ "$new_multica" != "${old_vers["multica"]}" ]; then
+            echo "Restarting multica daemon..."
+            export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+            if systemctl --user restart multica-daemon; then
+                sleep 2
+                if systemctl --user is-active --quiet multica-daemon; then
+                    echo "Multica daemon restarted successfully."
+                else
+                    echo "WARNING: multica daemon failed to come back up after restart." >&2
+                fi
+            else
+                echo "WARNING: multica daemon restart failed." >&2
+            fi
+        else
+            echo "Multica already up to date; daemon restart skipped."
+        fi
     fi
 
     echo -e "\n--- Update Report ---"
