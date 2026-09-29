@@ -17,6 +17,7 @@ A shell function that updates system packages and AI coding assistants in one co
 | Cline | npm |
 | Bitwarden CLI | npm |
 | GitHub Copilot | npm |
+| Playwright CLI | npm |
 | gog | GitHub release via `gh` |
 | Claude Code | `claude upgrade` |
 

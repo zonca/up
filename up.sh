@@ -26,7 +26,7 @@ _up_self_update() {
 up() {
     # _up_self_update  # Disabled locally to prevent overwriting fixes
 
-    local npm_pkgs=("@google/gemini-cli" "@openai/codex" "opencode-ai" "@charmland/crush" "@qwen-code/qwen-code" "cline" "@bitwarden/cli" "@github/copilot" "trello-cli")
+    local npm_pkgs=("@google/gemini-cli" "@openai/codex" "opencode-ai" "@charmland/crush" "@qwen-code/qwen-code" "cline" "@bitwarden/cli" "@github/copilot" "@playwright/cli" "trello-cli")
     local installed_npm=()
     declare -A old_vers
 
