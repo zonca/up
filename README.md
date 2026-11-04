@@ -18,6 +18,7 @@ A shell function that updates system packages and AI coding assistants in one co
 | Bitwarden CLI | npm |
 | GitHub Copilot | npm |
 | Playwright CLI | npm |
+| DeepSeek Harness (`dsh`) | pnpm global, plus profile plugin sync |
 | gog | GitHub release via `gh` |
 | Claude Code | `claude upgrade` |
 
@@ -36,6 +37,27 @@ up
 ```
 
 Output includes a version report showing old and new versions for every updated package.
+
+## DeepSeek Harness (dsh)
+
+`dsh` is a global pnpm package, so the script updates it with
+`pnpm add -g @deepseek-ai/dsh@latest` (it falls back to npm if that is where the
+package lives).
+
+A dsh profile pins the exact release of every `@deepseek-ai/dsh-*` plugin it
+installs, and a locally linked bundle pins it in its own `peerDependencies`.
+App-boot denies any plugin whose DSH requirement does not match the running
+harness, so updating only the harness would silently disable web search or
+sidebar bundles. When the release changes, `up` therefore also:
+
+1. rewrites the pinned `@deepseek-ai/dsh-*` versions in every
+   `$DSH_HOME/profiles/*/package.json`,
+2. rewrites the matching `peerDependencies` of bundles linked with `link:` or
+   `file:` (it prints the file so the change gets committed),
+3. reinstalls the profile plugins, restoring the previous manifest if the
+   install fails,
+4. restarts `dsh-web.service` (unless `up` runs inside dsh itself, where the
+   restart would kill the session).
 
 ## Self-update
 
