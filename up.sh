@@ -198,7 +198,7 @@ _up_dsh() {
 }
 
 up() {
-    # _up_self_update  # Disabled locally to prevent overwriting fixes
+    _up_self_update
 
     local npm_pkgs=("@google/gemini-cli" "@openai/codex" "opencode-ai" "@charmland/crush" "@qwen-code/qwen-code" "cline" "@bitwarden/cli" "@github/copilot" "@playwright/cli" "trello-cli")
     local installed_npm=()
