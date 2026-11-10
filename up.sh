@@ -215,7 +215,7 @@ up() {
     done
 
     if command -v gog >/dev/null 2>&1; then
-        old_vers["gog"]=$(gog version | head -1 | awk "{print \$2}")
+        old_vers["gog"]=$(gog version | head -1 | awk "{print \$1}")
     fi
 
     if command -v claude >/dev/null 2>&1; then
@@ -323,7 +323,7 @@ up() {
     done
 
     if command -v gog >/dev/null 2>&1; then
-        local new_gog=$(gog version | head -1 | awk "{print \$2}")
+        local new_gog=$(gog version | head -1 | awk "{print \$1}")
         printf "%-30s | %-15s -> %-15s\n" "gog" "${old_vers["gog"]}" "$new_gog"
     fi
 
